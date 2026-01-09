@@ -1,4 +1,4 @@
-# Road Low Point Analysis
+### Road Low Point Analysis
 __________________________________________
 Author: Noah Hallisey
 
@@ -25,7 +25,9 @@ This repository contains instructions and Python code for conducting a road low 
 
 ## Steps:
 
-# Set Environmental and Local Variables
+# Set Environment and Local Variables
+
+# Environment
 arcpy.env.workspace = ""
 arcpy.env.overwriteOutput = True
 

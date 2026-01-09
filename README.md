@@ -1,9 +1,10 @@
 # Road Low Point Analysis
 __________________________________________
-Author: Noah Hallisey; Date: 1/7/2026
+Author: Noah Hallisey
 
-This repository contains Python code for conducting a road low point analysis using arcpy and ArcGIS Pro tools.
-The code using an adapted version of Peter Stempel's R script for identifying road low points. 
+Date: 1/7/2026
+
+This repository contains instructions and Python code for conducting a road low point analysis using arcpy and ArcGIS Pro tools. The code using an adapted version of Peter Stempel's R script for identifying road low points. 
 
 ## Data Required:
 * Road dataset (vector)
@@ -23,6 +24,14 @@ The code using an adapted version of Peter Stempel's R script for identifying ro
 
 
 ## Steps:
+
+# Set Environmental and Local Variables
+arcpy.env.workspace = ""
+arcpy.env.overwriteOutput = True
+
+# Local Variables
+Roads = ""
+DEM = ""
 
 ### Step 1: Generate Point At Vertices (Feature Vertices to Point)
 

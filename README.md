@@ -1,7 +1,6 @@
 # Road Low Point Analysis
 __________________________________________
-Author: Noah Hallisey 
-Date: 1/7/2026
+Author: Noah Hallisey; Date: 1/7/2026
 
 This repository contains Python code for conducting a road low point analysis using arcpy and ArcGIS Pro tools.
 The code using an adapted version of Peter Stempel's R script for identifying road low points. 

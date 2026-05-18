@@ -34,10 +34,10 @@ form arcpy.sa import *
 ### Set Environment and Local Variables
 arcpy.env.workspace = ""
 
-#Read in roads dataset and DEM
+###Read in roads dataset and DEM
 
 ### Local Variables
-Roads = "", 
+Roads = "" 
 DEM = ""
 
 ### Step 1: Think road dataset by selecting and extracting only major roads (local, state, highway, etc.)

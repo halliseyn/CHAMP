@@ -26,18 +26,18 @@ Note: low points identified are not guaranteed to flood.
 
 ## Steps:
 
-# import arcpy
+### import arcpy
 import arcpy
 from arcpy import env
 form arcpy.sa import *
 
-# Set Environment and Local Variables
+### Set Environment and Local Variables
 arcpy.env.workspace = ""
 
 #Read in roads dataset and DEM
 
-# Local Variables
-Roads = ""
+### Local Variables
+Roads = "", 
 DEM = ""
 
 ### Step 1: Think road dataset by selecting and extracting only major roads (local, state, highway, etc.)

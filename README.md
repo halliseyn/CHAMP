@@ -9,8 +9,8 @@ This README file contains code to conduct the CHAMP road Low Point Analysis (LPA
 Note: low points identified are not guaranteed to flood.
 
 ## Data Required:
-### Rhode Island Geographic Information System (RIGIS) E-911 Road Centerlines Datatset
-### U.S. Geological Survey (USGS) 3D Elevation Program (DEP) 1-meter bare-earth Digitial Elevation Model
+#### Rhode Island Geographic Information System (RIGIS) E-911 Road Centerlines Datatset
+#### U.S. Geological Survey (USGS) 3D Elevation Program (DEP) 1-meter bare-earth Digitial Elevation Model
 
 ## Packages Required:
 * Arcpy
@@ -34,16 +34,16 @@ form arcpy.sa import *
 ### Set Environment and Local Variables
 arcpy.env.workspace = ""
 
-###Read in roads dataset and DEM
+###  Read in roads dataset and DEM
 
 ### Local Variables
-Roads = "" 
-DEM = ""
+#### Roads = "" 
+#### DEM = ""
 
 ### Step 1: Think road dataset by selecting and extracting only major roads (local, state, highway, etc.)
 arcpy.management.SelectLayerByAttribute(Roads, "NEW_SELECTION", where_clause="ST_Class in (3, 4, 20, 30, 40, 50, 52, 59, 91, 92)")
 
-#Export selected features to a new feature class 
+#### Export selected features to a new feature class 
 arcpy.management.CopyFeatures(Roads, 'roads_rd')
 
 ### Step 2: Convert roads dataset from multipart to single part - this is required to merge divided roads (in the next step)
@@ -61,7 +61,7 @@ arcpy.management.SplitLineAtPoint(in_features="roads_merge", point_features="roa
 ### Step 6: Thin road network again to reove roads shorter than 500 feet in length
 roads_reduce = arcpy.management.SelectLayerByAttribute(in_layer_or_view='roads_split', selection_type = "NEW_SELECTION", where_clause = '"Shape_Length" >= 500')
 
-###Export selected features to a new feature class (Copy Features)
+### Export selected features to a new feature class (Copy Features)
 arcpy.management.CopyFeatures(roads_reduce, out_feature_class= "roads_G500")
 
 ### Step 7: Generate a field to input a unique ID for each road segment
@@ -105,6 +105,6 @@ arcpy.management.JoinField('roads_pts_elev', "ROAD_ID", stats_table, "ROAD_ID", 
 ### Step 12: Select points where the "RASTERVALU" column = "MIN_RASTERVALU" column (this is the lowest elevation)
 arcpy.management.SelectLayerByAttribute(in_layer_or_view="roads_pts_elev", selection_type="NEW_SELECTION", where_clause= '"RASTERVALU" = "MIN_RASTERVALU"')
 
-####Export selected features to a new feature class 
+#### Export selected features to a new feature class 
 arcpy.management.CopyFeatures(in_features="roads_pts_elev", out_feature_class="roads_LPA")
 

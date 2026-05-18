@@ -29,7 +29,7 @@ Note: low points identified are not guaranteed to flood.
 import arcpy
 from arcpy import env
 form arcpy.sa import *
-&nbsp;
+
 
 ### Set Environment and Local Variables
 arcpy.env.workspace = ""
@@ -45,8 +45,7 @@ arcpy.management.SelectLayerByAttribute(Roads, "NEW_SELECTION", where_clause="ST
 
 #### Export selected features to a new feature class 
 arcpy.management.CopyFeatures(Roads, 'roads_rd')
-
-
+<br>
 ### Step 2: Convert roads dataset from multipart to single part - this is required to merge divided roads (in the next step)
 arcpy.management.MultipartToSinglepart('roads_rd', 'roads_sp')
 

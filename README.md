@@ -9,8 +9,8 @@ This README file contains code to conduct the CHAMP road Low Point Analysis (LPA
 Note: low points identified are not guaranteed to flood.
 
 ## Data Required:
-# Rhode Island Geographic Information System (RIGIS) E-911 Road Centerlines Datatset
-# U.S. Geological Survey (USGS) 3D Elevation Program (DEP) 1-meter bare-earth Digitial Elevation Model
+### Rhode Island Geographic Information System (RIGIS) E-911 Road Centerlines Datatset
+### U.S. Geological Survey (USGS) 3D Elevation Program (DEP) 1-meter bare-earth Digitial Elevation Model
 
 ## Packages Required:
 * Arcpy
@@ -64,7 +64,7 @@ roads_reduce = arcpy.management.SelectLayerByAttribute(in_layer_or_view='roads_s
 ###Export selected features to a new feature class (Copy Features)
 arcpy.management.CopyFeatures(roads_reduce, out_feature_class= "roads_G500")
 
-### Step 8: Generate a field to input a unique ID for each road segment
+### Step 7: Generate a field to input a unique ID for each road segment
 arcpy.management.AddField(in_table="roads_G500", field_name="ROAD_ID", field_type="FLOAT")
 
 ### Python expression for generating sequential ist of numbers used as the unique ID
@@ -83,9 +83,28 @@ def autoIncrement():
     return rec
 """
 
-### Step 9: Input sequential number list from step above in the empty field 
+### Step 8: Input sequential number list from step above in the empty field 
 arcpy.management.CalculateField(in_table="roads_split", field="ROAD_ID", expression=expression, expression_type="PYTHON3", code_block=code_block)
 
-### Step 10: Select the lowest value (Select By Attribute)
+### Step 9: Generate point every meter (3 feet) along each road. The points generated are used to extract elevation value from the DEM
+arcpy.management.GeneratePointsAlongLines(Input_Features='roads_split', Output_Feature_Class='road_pts_3ft', Point_Placement='DISTANCE', Distance= '3')
 
-### Step 11: Extract the low point to a new feature class (Copy Features)
+### Step 10: Extract elevation value from USGS 3DEP DEM
+ExtractValuesToPoints(in_point_features="road_pts_3ft", in_raster=dem_raster, out_point_features="roads_pts_elev")
+
+### Step 11: Isolate the low point
+#### Step 11.1: Generate empty stats table used to read the minimum value for each road
+stats_table = 'min_elev_stats'
+
+#### Step 11.2: Use the statistics tool to calculate
+arcpy.analysis.Statistics("roads_pts_elev", stats_table, [["RASTERVALU", "MIN"]], case_field="ROAD_ID")
+
+#### Step 11.3: Join stats table back to points feature class using the shared ID ("ROAD_ID")
+arcpy.management.JoinField('roads_pts_elev', "ROAD_ID", stats_table, "ROAD_ID", ["MIN_RASTERVALU"])
+
+### Step 12: Select points where the "RASTERVALU" column = "MIN_RASTERVALU" column (this is the lowest elevation)
+arcpy.management.SelectLayerByAttribute(in_layer_or_view="roads_pts_elev", selection_type="NEW_SELECTION", where_clause= '"RASTERVALU" = "MIN_RASTERVALU"')
+
+####Export selected features to a new feature class 
+arcpy.management.CopyFeatures(in_features="roads_pts_elev", out_feature_class="roads_LPA")
+

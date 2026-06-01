@@ -128,8 +128,14 @@ arcpy.management.JoinField('roads_pts_elev', "ROAD_ID", stats_table, "ROAD_ID", 
 <br>
 
 ### Step 12: Select points where the "RASTERVALU" column = "MIN_RASTERVALU" column (this is the lowest elevation)
-arcpy.management.SelectLayerByAttribute(in_layer_or_view="roads_pts_elev", selection_type="NEW_SELECTION", where_clause= '"RASTERVALU" = "MIN_RASTERVALU"')
+roads_elev = arcpy.management.SelectLayerByAttribute(in_layer_or_view="roads_pts_elev", selection_type="NEW_SELECTION", where_clause= '"RASTERVALU" = "MIN_RASTERVALU"')
 
 #### Export selected features to a new feature class 
-arcpy.management.CopyFeatures(in_features="roads_pts_elev", out_feature_class="roads_LPA")
+arcpy.management.CopyFeatures(roads_elev, out_feature_class="roads_LPA")
+
+#Step 13 - Clean up attribute table by deleting unnecessary field names
+fields_to_delete = [""]
+
+#Execute the Delete Field Tool
+arcpy.management.DeleteField(roads_elev, fields_to_delete)
 

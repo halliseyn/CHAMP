@@ -133,12 +133,14 @@ roads_elev = arcpy.management.SelectLayerByAttribute(in_layer_or_view="roads_pts
 #### Export selected features to a new feature class 
 arcpy.management.CopyFeatures(roads_elev, out_feature_class="roads_LPA")
 
-## #Step 13 - Clean up attribute table by deleting unnecessary field names
+### Step 13 - Clean up attribute table by deleting unnecessary field names
+
+#### Step 13.1 - Create object with field names
 fields_to_delete =["Shape_Leng", "DateUpdate", "RCL_GUID", "FromAddr_L", "To_Addr_R", "FromAddr_R", "ToAddr_R", "ST_PreMod", "ST_PReDir", "St_PreTyp",
                    "St_Name", "St_PosTyp", "St_Pos_Mod", "MSAGComm_L", "ESN_L","ESN_R", "State_L", "State_R", "PostCode_L", "Country_L", "Country_R",
                    "St_RouteNo", "St_Alias1","St_Alias2", "St_Alias3", "St_Alias4", "St_Alias5", "St_Class", "SrfceType", "One_Way", "Speed_Limi","Last_Updat"]
 
-#### Execute the Delete Field Tool
+#### Step 13.2 - Execute the Delete Field Tool
 arcpy.management.DeleteField(roads_elev, fields_to_delete)
 
 Output is the LPA
